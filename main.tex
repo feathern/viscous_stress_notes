@@ -1,0 +1,153 @@
+\documentclass[10pt, letterpaper]{article}
+\usepackage{graphicx}   % need this for pngs
+\usepackage{epsfig}     % need this for eps files
+\usepackage{amsmath}
+\usepackage[table]{xcolor}
+\usepackage{color}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\usepackage{textpos}
+
+% use a larger page size; otherwise, it is difficult to have complete
+% code listings and output on a single page
+\usepackage{fullpage}
+
+
+% use the listings package for code snippets. define keywords for prm files
+% and for gnuplot
+\usepackage{listings}
+\lstset{frame=tb,
+  language=Fortran,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\lstdefinelanguage{prmfile}{morekeywords={set,subsection,end},
+                            morecomment=[l]{\#},escapeinside={\%\%}{\%},}
+\lstdefinelanguage{gnuplot}{morekeywords={plot,using,title,with,set,replot},
+                            morecomment=[l]{\#},}
+
+
+% use the hyperref package; set the base for relative links to
+% the top-level Rayleigh directory so that we can link to
+% files in the Rayleigh tree without having to specify the
+% location relative to the directory where the pdf actually
+% resides
+\usepackage[colorlinks,linkcolor=blue,urlcolor=blue,citecolor=blue,destlabel=true,baseurl=../]{hyperref}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\newcommand{\rayleigh}{\textsc{Rayleigh}}
+
+\begin{document}
+
+\definecolor{dark_grey}{gray}{0.3}
+\definecolor{aspect_blue}{rgb}{0.3125,0.6875,0.9375}
+
+%LINE 1%
+{
+\renewcommand{\familydefault}{\sfdefault}
+
+%\pagenumbering{gobble}
+
+\pagenumbering{arabic}
+\renewcommand{\abstractname}{Overview}
+
+
+\title{Notes on Viscous Stress Tensor}
+\author{Nick Featherstone}
+\date{}
+\maketitle
+
+\newcommand{\uvec}{\boldsymbol{u}}
+\newcommand{\vgrad}{\boldsymbol{\nabla}}
+\newcommand{\Dscript}{\boldsymbol{\mathcal{D}}}
+\newcommand{\ebold}{\boldsymbol{e}}
+\newcommand{\etwiddle}{\boldsymbol{\tilde{e}}}
+\newcommand{\etwid}{\tilde{e}}
+\newcommand{\sintheta}{\mathrm{sin}\theta}
+\newcommand{\cottheta}{\mathrm{cot}\theta}
+\newcommand{\dvec}{\boldsymbol{d}}
+\newcommand{\bvec}{\boldsymbol{b}}
+\newcommand{\mvec}{\boldsymbol{m}}
+\newcommand{\divu}{\vgrad\cdot\uvec}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\third}{\frac{1}{3}}
+\section{Overview}
+The momentum equation, in the absence of rotation and any body forces is given by
+\begin{equation}
+\label{eq:momentum1}
+\rho\frac{D\uvec}{Dt} = -\vgrad P +\vgrad\cdot\Dscript,
+\end{equation}
+where $\uvec$ is the velocity vector, $P$ is the pressure, $\rho$ is the density.  The second order viscous stress tensor, which we will define shortly, is given by $\Dscript$.   Our goal is to formulate and expression for $\vgrad\cdot\Dscript$ for the situation where $\rho$ and kinematic viscosity $\nu$ are allowed to vary abitrarily with position.
+
+\section{Viscous Stress Tensor:  Definitions}
+The viscous stress tensor $\Dscript$ has elements $\mathcal{D}_{ij}$ defined by
+\begin{equation}
+\label{eq:Dij}
+\mathcal{D}_{ij}=2\rho\nu\left[e_{ij}-\third\left(\divu\right)\delta_{ij}\right],
+\end{equation}
+where $\delta_{ij}$ is the Kronecker delta, and $e_{ij}$ are the elements of the symmetric, second order strain rate tensor $\ebold$.  The elements of $\ebold$ are defined as follows
+\begin{align}
+e_{rr}& = \frac{\partial u_r}{\partial r}                                              \\
+e_{\theta\theta}& = \frac{1}{r}\frac{\partial u_\theta}{\partial\theta}+\frac{u_r}{r}  \\
+e_{\phi\phi}& = \frac{1}{r\sintheta}\frac{\partial u_\phi}{\partial\phi} +\frac{u_r}{r} + \frac{u_\theta\cottheta}{r} \\
+e_{r\theta}& = \half\left[ r\frac{\partial}{\partial r}\left( \frac{u_\theta}{r} \right) +  \frac{1}{r}\frac{\partial u_r}{\partial\theta}  \right]    = e_{\theta r}              \\
+e_{r\phi}&  = \half\left[ \frac{1}{r\sintheta}\frac{\partial u_r}{\partial\phi} + r\frac{\partial}{\partial r}\left(\frac{u_\phi}{r} \right)   \right]   = e_{\phi r}\\
+e_{\theta\phi}& = \half\left[ \frac{\sintheta}{r}\frac{\partial}{\partial\theta}\left( \frac{u_\phi}{\sintheta} \right) +  \frac{1}{r\sintheta}\frac{\partial u_\theta}{\partial\phi}  \right] = e_{\phi\theta}
+\end{align}
+ 
+\section{Divergence of the Stress Tensor}
+Before proceeding, let's use the dynamic viscosity $\mu\equiv\rho\nu$ and use $\etwiddle$ to denote the combination of the stress tensor and divergence piece.  Namely,
+\begin{equation}
+\label{eq:etwiddle}
+\tilde{e}_{ij} \equiv e_{ij} - \third\left(\divu\right)\delta_{ij},
+\end{equation}
+so that 
+\begin{equation}
+\mathcal{D}_{ij} = 2\mu\tilde{e}_{ij}.
+\end{equation}
+Once can then show (on some notes I lost long ago, but people do this all the time) that
+\begin{equation}
+\vgrad\cdot\Dscript = \mu\left[\nabla^2\uvec + \third\vgrad\left(\divu\right)  \right] + 2\left(\vgrad\mu\right)\cdot\etwiddle.
+\end{equation}
+
+The term involving $\nabla^2$ can be looked up easily enough.   Our job is to formulate expressions for the second and third terms.
+
+\section{Gradient of $\vgrad\cdot\uvec$}
+Let $\dvec\equiv\vgrad\left(\divu\right)$.   When then have that
+\begin{align}
+d_r& =            \\
+d_\theta& =       \\
+d_\phi& =         \\
+\end{align}
+
+\section{Vector-Tensor Product $\left(\vgrad\mu\right)\cdot\etwiddle$}
+I always forget how to do this.  Here's a nice link:  
+\\
+\\
+https:\/\/people.rit.edu\/pnveme\/personal\/EMEM851n\/constitutive\/tensors\_rect.html
+\\
+\\
+Again, let's adopt some shorthand.  Suppose that $\bvec\equiv\left(\vgrad\mu\right)\cdot\etwiddle$ and $\mvec\equiv\vgrad\mu$.  We then have that
+\begin{align}
+\label{eq:vectens}
+b_r &=  \left(\etwid_{rr}\,m_r + \etwid_{r\theta}\,m_\theta + \etwid_{r\phi}\,m_\phi \right) =& ? \\
+b_\theta &=\left(\etwid_{\theta r}\,m_r + \etwid_{\theta\theta}\,m_\theta + \etwid_{\theta\phi}\,m_\phi \right) =& ? \\  
+b_\phi &=  \left(\etwid_{\phi r}\,m_r + \etwid_{\phi\theta}\,m_\theta + \etwid_{\phi\phi}\,m_\phi \right) =& ? 
+\end{align}
+
+\end{document}
