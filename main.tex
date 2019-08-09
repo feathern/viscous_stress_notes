@@ -58,7 +58,7 @@
 \definecolor{aspect_blue}{rgb}{0.3125,0.6875,0.9375}
 
 %LINE 1%
-{
+
 \renewcommand{\familydefault}{\sfdefault}
 
 %\pagenumbering{gobble}
@@ -80,6 +80,7 @@
 \newcommand{\etwid}{\tilde{e}}
 \newcommand{\sintheta}{\mathrm{sin}\theta}
 \newcommand{\cottheta}{\mathrm{cot}\theta}
+\newcommand{\csctheta}{\mathrm{csc}\theta}
 \newcommand{\dvec}{\boldsymbol{d}}
 \newcommand{\bvec}{\boldsymbol{b}}
 \newcommand{\mvec}{\boldsymbol{m}}
@@ -130,9 +131,9 @@ The term involving $\nabla^2$ can be looked up easily enough.   Our job is to fo
 \section{Gradient of $\vgrad\cdot\uvec$}
 Let $\dvec\equiv\vgrad\left(\divu\right)$.   When then have that
 \begin{align}
-d_r& =            \\
-d_\theta& =       \\
-d_\phi& =         \\
+d_r& =  \frac{1}{r} \left[2 \frac{\partial u_r}{\partial r} + \frac{\partial}{\partial r} \left(\frac{\partial u_{\theta}}{\partial \theta} \right) + \cottheta \frac{\partial u_{\theta}}{\partial r} + \csctheta \frac{\partial}{\partial r} \left(\frac{\partial u_{\phi}}{\partial \phi} \right) \right] - \frac{1}{r^2} \left[2 u_r + \frac{\partial u_{\theta}}{\partial \theta} + \cottheta u_{\theta} + \csctheta \frac{\partial u_{\phi}}{\partial \phi} \right] + \frac{\partial^2 u_r}{\partial r^2}        \\
+d_\theta& = \frac{1}{r^2} \left[\frac{\partial^2 u_{\theta}}{\partial \theta^2} + 2 \frac{\partial u_r}{\partial \theta} - u_{\theta} + \cottheta \frac{\partial u_{\theta}}{\partial \theta} + \csctheta \frac{\partial}{\partial \theta} \left(\frac{\partial u_{\phi}}{\partial \phi} \right) - \csctheta^2 u_{\theta} - \cottheta \csc\theta \frac{\partial u_{\phi}}{\partial \phi} \right] + \frac{1}{r} \frac{\partial}{\partial \theta} \left(\frac{\partial u_r}{\partial r} \right)     \\
+d_\phi& = \frac{1}{r^2} \csctheta \left[2 \frac{\partial u_r}{\partial \phi} + \frac{\partial}{\partial \phi} \left(\frac{\partial u_{\theta}}{\partial \theta} \right) + \cottheta \frac{\partial u_{\theta}}{\partial \phi} + \csctheta \frac{\partial^2 u_{\phi}}{\partial \phi^2} \right] + \frac{1}{r} \csctheta \frac{\partial}{\partial \phi} \left(\frac{\partial u_r}{\partial r} \right)
 \end{align}
 
 \section{Vector-Tensor Product $\left(\vgrad\mu\right)\cdot\etwiddle$}
@@ -145,9 +146,9 @@ https://people.rit.edu/pnveme/personal/EMEM851n/constitutive/tensors\_rect.html
 Again, let's adopt some shorthand.  Suppose that $\bvec\equiv\left(\vgrad\mu\right)\cdot\etwiddle$ and $\mvec\equiv\vgrad\mu$.  We then have that
 \begin{align}
 \label{eq:vectens}
-b_r &=  \left(\etwid_{rr}\,m_r + \etwid_{r\theta}\,m_\theta + \etwid_{r\phi}\,m_\phi \right) =& ? \\
-b_\theta &=\left(\etwid_{\theta r}\,m_r + \etwid_{\theta\theta}\,m_\theta + \etwid_{\theta\phi}\,m_\phi \right) =& ? \\  
-b_\phi &=  \left(\etwid_{\phi r}\,m_r + \etwid_{\phi\theta}\,m_\theta + \etwid_{\phi\phi}\,m_\phi \right) =& ? 
+b_r &=  \left(\etwid_{rr}\,m_r + \etwid_{r\theta}\,m_\theta + \etwid_{r\phi}\,m_\phi \right) \\ =&  \frac{\partial u_r}{\partial r} \frac{\partial \mu}{\partial r} + \frac{1}{2 r} \left[r \frac{\partial}{\partial r} \left( \frac{u_{\theta}}{r}\right) + \frac{1}{r} \frac{\partial u_r}{\partial \theta} \right] \frac{\partial \mu}{\partial \theta} + \frac{1}{2 r \sintheta} \left[\frac{1}{r \sintheta} \frac{\partial u_r}{\partial \phi} + r \frac{\partial}{\partial r} \left(\frac{u_{\phi}}{r} \right) \right] \frac{\partial \mu}{\partial \phi}  \\ \\
+b_\theta &=\left(\etwid_{\theta r}\,m_r + \etwid_{\theta\theta}\,m_\theta + \etwid_{\theta\phi}\,m_\phi \right) \\=& \frac{1}{2} \left[r \frac{\partial}{\partial r} \left(\frac{u_{\theta}}{r} \right) + \frac{1}{r} \frac{\partial u_r}{\partial \theta} \right] \frac{\partial \mu}{\partial r} + \frac{1}{r^2} \left[\frac{\partial u_{\theta}}{\partial \theta} + u_r \right] \frac{\partial \mu}{\partial \theta} + \frac{1}{2 r^2 \sintheta} \left[\sintheta \frac{\partial}{\partial \theta} \left(\frac{u_{\phi}}{\sintheta} \right) + \frac{1}{\sintheta} \frac{\partial u_{\theta}}{\partial \phi} \right] \frac{\partial \mu}{\partial \phi}\\ \\ 
+b_\phi &=  \left(\etwid_{\phi r}\,m_r + \etwid_{\phi\theta}\,m_\theta + \etwid_{\phi\phi}\,m_\phi \right) \\ =& \frac{1}{2} \left[\frac{1}{r \sintheta} \frac{\partial u_r}{\partial \phi} + r \frac{\partial}{\partial r} \left(\frac{u_{\phi}}{r} \right) \right] \frac{\partial \mu}{\partial r} + \frac{1}{2 r^2} \left[\sintheta \frac{\partial}{\partial \theta} \left(\frac{u_{\phi}}{\sintheta} \right) + \frac{1}{\sintheta} \frac{\partial u_{\theta}}{\partial \phi} \right] \frac{\partial \mu}{\partial \theta} + \frac{1}{r^2 \sintheta} \left[\frac{1}{\sintheta} \frac{\partial u_{\phi}}{\partial \phi} + u_r + u_{\theta} \cottheta \right] \frac{\partial \mu}{\partial \phi} 
 \end{align}
 
 \end{document}
